@@ -15,8 +15,7 @@
 
         function getString(...arr) {
             let hyphen = '-';
-            return arr.includes(hyphen) ? arr.filter(curr => curr !== hyphen).join(hyphen) :
-                'There is no hyphen in the given arguments!!!';
+            return arr.filter(curr => curr !== hyphen).join(hyphen);
         }
         getString('-', '65', 'a', 'p'); // 65-a-p
         getString('75', '-', 'ad', 'hg', '543'); // 75-ad-hg-543
@@ -31,6 +30,7 @@
                 return 3423;
             })
             .catch((e) => console.log('fdsfd', e));
+        console.log('Перехватит');
 
         // или здесь
         new Promise((resolve, reject) => {
@@ -77,9 +77,9 @@
             let seleion = await context.present();
 
 
-            selection.forEach((selected) => {
+            selection.forEach(async (selected) => {
                 uploadedImage = selected;
-                cropImage();
+                await cropImage();
             });
         }
 
@@ -100,7 +100,7 @@
 
         async function takePhoto() {
             await camera.requestPermissions();
-            let imageAsset = await camera.tacePicture();
+            let imageAsset = await camera.takePicture();
             uploadedImage = imageAsset;
             cropImage();
         }
@@ -172,7 +172,7 @@
                 req.send();
                 req.onload = function () {
                     if (!this.responseText) {
-                        rej('Thre is some problem in response from server!!!');
+                        rej('Server not response o_O');
                     }
                     res(JSON.parse(this.responseText));
                 }
@@ -188,9 +188,13 @@
 
         let url = 'https://playwithpromise.herokuapp.com/api/order-review/last';
         async function callReq(url) {
-            await printUrl(url);
-            let response = await request(url);
-            return response;
+            try {
+                await printUrl(url);
+                let response = await request(url);
+                return response;
+            } catch (e) {
+                console.log('Error: ', e);
+            }
         }
 
         callReq(url).then(console.log);
@@ -199,18 +203,12 @@
 
         // -5) Ну и последнее так уже чтобы расслабиться)! Пишем свой собственный push!!
         function push(array, ...elements) {
-            if (Array.isArray(array)) {
-                elements.forEach(curr => array[array.length] = curr);
-                return array.length;
-            }
-            return 'First parameter is not an array!!!';
+            elements.forEach(curr => array[array.length] = curr);
+            return array.length;
         }
         let arr = [1, 2, 3, 4, 5];
         console.log(push(arr, 6));
         console.log(arr);
-        console.log(push(arr, 7, 8, 9, 10));
-        console.log(arr);
-        console.log(push('arr', 7, 8, 9, 10));
     </script>
 </body>
 
