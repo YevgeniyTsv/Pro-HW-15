@@ -102,7 +102,7 @@
             await camera.requestPermissions();
             let imageAsset = await camera.takePicture();
             uploadedImage = imageAsset;
-            cropImage();
+            await cropImage();
         }
 
 
@@ -123,7 +123,7 @@
         }
 
         // async Crops picture
-        function cropImage() {
+        async function cropImage() {
             let source = new imageSource.ImageSource();
             let fromAssetSourse = await source.fromAsset(this.uploadedImage);
             let args = await this.imageCropper.show(fromAssetSourse, cropOptions);
